@@ -35,7 +35,6 @@ class Sayfa4 : AppCompatActivity() {
         setContentView(R.layout.activity_sayfa4)
 
         val previewViewBack = findViewById<PreviewView>(R.id.previewViewBack)
-        //previewView.visibility = View.VISIBLE
 
         val photoImageView = findViewById<ImageView>(R.id.photoImageView)
 
@@ -56,7 +55,6 @@ class Sayfa4 : AppCompatActivity() {
 
         buttonForward.setOnClickListener {
             val intent = Intent(this, Sayfa5::class.java)
-            finish()
             startActivity(intent)
         }
 

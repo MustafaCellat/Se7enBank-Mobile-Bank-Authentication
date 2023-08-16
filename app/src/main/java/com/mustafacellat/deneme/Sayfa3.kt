@@ -54,7 +54,6 @@ class Sayfa3 : AppCompatActivity() {
 
         buttonForward.setOnClickListener {
             val intent = Intent(this, Sayfa4::class.java)
-            finish()
             startActivity(intent)
         }
 

@@ -35,7 +35,6 @@ class Sayfa5 : AppCompatActivity() {
         setContentView(R.layout.activity_sayfa5)
 
         val previewViewFace = findViewById<PreviewView>(R.id.previewViewFace)
-        //previewViewFace.visibility = View.VISIBLE
 
         val buttonForward = findViewById<Button>(R.id.button_forward)
         buttonForward.visibility = View.INVISIBLE
@@ -51,7 +50,6 @@ class Sayfa5 : AppCompatActivity() {
 
         buttonForward.setOnClickListener {
             val intent = Intent(this, Sayfa6::class.java)
-            finish()
             startActivity(intent)
         }
 
