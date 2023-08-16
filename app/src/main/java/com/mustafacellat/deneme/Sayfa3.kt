@@ -76,7 +76,7 @@ class Sayfa3 : AppCompatActivity() {
         captureButton.setOnClickListener {
             captureImage()
 
-            //previewViewFront.visibility = View.INVISIBLE // veya View.GONE
+            previewViewFront.visibility = View.INVISIBLE // veya View.GONE
             captureButton.visibility = View.INVISIBLE
             text.visibility = View.INVISIBLE
 
@@ -93,7 +93,7 @@ class Sayfa3 : AppCompatActivity() {
                 buttonYes.visibility = View.INVISIBLE
                 captureButton.visibility = View.VISIBLE
                 text.visibility = View.VISIBLE
-                //previewViewFront.visibility = View.VISIBLE
+                previewViewFront.visibility = View.VISIBLE
                 photoImageView.setImageDrawable(null)
             }
         }

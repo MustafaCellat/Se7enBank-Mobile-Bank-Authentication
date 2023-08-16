@@ -70,7 +70,13 @@ class Sayfa5 : AppCompatActivity() {
                             .setTargetRotation(display.rotation)
                             .build()
                     } else {
-                        Toast.makeText(this, "HATAAAAAAAAA", Toast.LENGTH_SHORT).show()
+                        while (display == null) {
+                            // Eğer display null ise sayfayı yeniden başlat
+                            val intent = Intent(this, Sayfa5::class.java)
+                            finish()
+                            startActivity(intent)
+                            return@addListener
+                        }
                     }
                 } else {
                     Toast.makeText(this, "Bir hata oluştu", Toast.LENGTH_SHORT).show()
@@ -85,7 +91,7 @@ class Sayfa5 : AppCompatActivity() {
             captureImage()
             val text = findViewById<TextView>(R.id.textFace)
 
-            //previewViewFace.visibility = View.INVISIBLE // veya View.GONE
+            previewViewFace.visibility = View.INVISIBLE // veya View.GONE
             captureButton.visibility = View.INVISIBLE
             text.visibility = View.INVISIBLE
 
@@ -102,7 +108,7 @@ class Sayfa5 : AppCompatActivity() {
                 buttonYes.visibility = View.INVISIBLE
                 captureButton.visibility = View.VISIBLE
                 text.visibility = View.VISIBLE
-                //previewViewFace.visibility = View.VISIBLE
+                previewViewFace.visibility = View.VISIBLE
                 val photoImageView = findViewById<ImageView>(R.id.photoImageView)
                 photoImageView.setImageDrawable(null)
             }

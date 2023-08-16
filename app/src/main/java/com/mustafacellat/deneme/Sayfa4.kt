@@ -34,7 +34,7 @@ class Sayfa4 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sayfa4)
 
-        val previewView = findViewById<PreviewView>(R.id.previewViewBack)
+        val previewViewBack = findViewById<PreviewView>(R.id.previewViewBack)
         //previewView.visibility = View.VISIBLE
 
         val photoImageView = findViewById<ImageView>(R.id.photoImageView)
@@ -75,7 +75,13 @@ class Sayfa4 : AppCompatActivity() {
                             .setTargetRotation(display.rotation)
                             .build()
                     } else {
-                        Toast.makeText(this, "HATAAAAAAAAA", Toast.LENGTH_SHORT).show()
+                        while (display == null) {
+                            // Eğer display null ise sayfayı yeniden başlat
+                            val intent = Intent(this, Sayfa4::class.java)
+                            finish()
+                            startActivity(intent)
+                            return@addListener
+                        }
                     }
                 } else {
                     Toast.makeText(this, "Bir hata oluştu", Toast.LENGTH_SHORT).show()
@@ -89,7 +95,7 @@ class Sayfa4 : AppCompatActivity() {
         captureButton.setOnClickListener {
             captureImage()
 
-            //previewViewBack.visibility = View.INVISIBLE // veya View.GONE
+            previewViewBack.visibility = View.INVISIBLE // veya View.GONE
             captureButton.visibility = View.INVISIBLE
             text.visibility = View.INVISIBLE
 
@@ -106,7 +112,7 @@ class Sayfa4 : AppCompatActivity() {
                 buttonYes.visibility = View.INVISIBLE
                 captureButton.visibility = View.VISIBLE
                 text.visibility = View.VISIBLE
-                //previewViewBack.visibility = View.VISIBLE
+                previewViewBack.visibility = View.VISIBLE
                 photoImageView.setImageDrawable(null)
             }
         }
