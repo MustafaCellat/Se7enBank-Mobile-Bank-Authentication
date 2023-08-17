@@ -34,6 +34,8 @@ class Sayfa4 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sayfa4)
 
+        val frame = findViewById<View>(R.id.frameView)
+
         val previewViewBack = findViewById<PreviewView>(R.id.previewViewBack)
 
         val photoImageView = findViewById<ImageView>(R.id.photoImageView)
@@ -66,25 +68,20 @@ class Sayfa4 : AppCompatActivity() {
                 preview.setSurfaceProvider(findViewById<PreviewView>(R.id.previewViewBack).surfaceProvider)
 
                 val previewView = findViewById<PreviewView>(R.id.previewViewBack)
-                if (previewView != null) {
-                    val display = previewView.display
-                    if (display != null) {
-                        imageCapture = ImageCapture.Builder()
-                            .setTargetRotation(display.rotation)
-                            .build()
-                    } else {
-                        while (display == null) {
-                            // Eğer display null ise sayfayı yeniden başlat
-                            val intent = Intent(this, Sayfa4::class.java)
-                            finish()
-                            startActivity(intent)
-                            return@addListener
-                        }
-                    }
+                val display = previewView.display
+                if (display != null) {
+                    imageCapture = ImageCapture.Builder()
+                        .setTargetRotation(display.rotation)
+                        .build()
                 } else {
-                    Toast.makeText(this, "Bir hata oluştu", Toast.LENGTH_SHORT).show()
+                    while (display == null) {
+                        // Eğer display null ise sayfayı yeniden başlat
+                        val intent = Intent(this, Sayfa4::class.java)
+                        finish()
+                        startActivity(intent)
+                        return@addListener
+                    }
                 }
-
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
             }, ContextCompat.getMainExecutor(this)
         )
@@ -93,7 +90,8 @@ class Sayfa4 : AppCompatActivity() {
         captureButton.setOnClickListener {
             captureImage()
 
-            previewViewBack.visibility = View.INVISIBLE // veya View.GONE
+            frame.visibility = View.INVISIBLE
+            previewViewBack.visibility = View.INVISIBLE
             captureButton.visibility = View.INVISIBLE
             text.visibility = View.INVISIBLE
 
@@ -108,6 +106,7 @@ class Sayfa4 : AppCompatActivity() {
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
+                frame.visibility = View.VISIBLE
                 captureButton.visibility = View.VISIBLE
                 text.visibility = View.VISIBLE
                 previewViewBack.visibility = View.VISIBLE

@@ -46,7 +46,7 @@ class Sayfa5 : AppCompatActivity() {
         buttonNo.visibility = View.INVISIBLE
 
         val preview = Preview.Builder().build()
-        val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+        val cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
 
         buttonForward.setOnClickListener {
             val intent = Intent(this, Sayfa6::class.java)
@@ -61,25 +61,21 @@ class Sayfa5 : AppCompatActivity() {
                 preview.setSurfaceProvider(findViewById<PreviewView>(R.id.previewViewFace).surfaceProvider)
 
                 val previewView = findViewById<PreviewView>(R.id.previewViewFace)
-                if (previewView != null) {
-                    val display = previewView.display
-                    if (display != null) {
-                        imageCapture = ImageCapture.Builder()
-                            .setTargetRotation(display.rotation)
-                            .build()
-                    } else {
-                        while (display == null) {
-                            // Eğer display null ise sayfayı yeniden başlat
-                            val intent = Intent(this, Sayfa5::class.java)
-                            finish()
-                            startActivity(intent)
-                            return@addListener
-                        }
-                    }
-                } else {
-                    Toast.makeText(this, "Bir hata oluştu", Toast.LENGTH_SHORT).show()
-                }
 
+                val display = previewView.display
+                if (display != null) {
+                    imageCapture = ImageCapture.Builder()
+                        .setTargetRotation(display.rotation)
+                        .build()
+                } else {
+                    while (display == null) {
+                        // Eğer display null ise sayfayı yeniden başlat
+                        val intent = Intent(this, Sayfa5::class.java)
+                        finish()
+                        startActivity(intent)
+                        return@addListener
+                    }
+                }
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
             }, ContextCompat.getMainExecutor(this)
         )
@@ -89,7 +85,7 @@ class Sayfa5 : AppCompatActivity() {
             captureImage()
             val text = findViewById<TextView>(R.id.textFace)
 
-            previewViewFace.visibility = View.INVISIBLE // veya View.GONE
+            previewViewFace.visibility = View.INVISIBLE
             captureButton.visibility = View.INVISIBLE
             text.visibility = View.INVISIBLE
 

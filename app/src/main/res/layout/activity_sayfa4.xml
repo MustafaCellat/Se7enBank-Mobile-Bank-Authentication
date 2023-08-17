@@ -38,8 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Lütfen kimliğinizin arka yüzünü çekiniz"
-        android:textSize="23sp"
+        android:text="Lütfen kimliğinizin arka yüzünü belirtilen alanın içinde çekiniz"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/previewViewBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,4 +93,16 @@
         android:background="@drawable/baseline_cancel_24"
         app:layout_constraintBottom_toBottomOf="@+id/yes"
         app:layout_constraintStart_toStartOf="@+id/photoImageView" />
+
+    <View
+        android:id="@+id/frameView"
+        android:layout_width="370dp"
+        android:layout_height="250dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="22dp"
+        android:background="@drawable/border_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/photoImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

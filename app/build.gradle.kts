@@ -41,6 +41,7 @@ dependencies {
     //implementation("androidx.camera:camera-lifecycle:1.1.0-alpha04")
     //implementation("androidx.camera:camera-view:1.1.0-alpha04")
 
+    implementation("androidx.cardview:cardview:1.0.0") // En son sürümü kontrol edin
 
     implementation("androidx.browser:browser:1.5.0") // touri için
     implementation("com.github.bumptech.glide:glide:4.15.1") // glide için

@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Sayfa3"
-    android:background="#0277C8">
+    android:background="#0277C8"
+    tools:context=".Sayfa3">
 
     <Button
         android:id="@+id/take_photo_front"
-        android:contentDescription=" "
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginBottom="31dp"
         android:background="@drawable/baseline_circle_24"
+        android:contentDescription=" "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -34,13 +34,16 @@
 
     </androidx.camera.view.PreviewView>
 
+
     <TextView
         android:id="@+id/textFront"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Lütfen kimliğinizin ön yüzünü çekiniz"
-        android:textSize="23sp"
+        android:text="Lütfen kimliğinizin ön yüzünü belirtilen alanın içinde çekiniz"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/previewViewFront"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,23 +77,36 @@
 
     <Button
         android:id="@+id/yes"
-        android:contentDescription=" "
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="97dp"
         android:layout_marginBottom="31dp"
         android:background="@drawable/baseline_check_circle_24"
+        android:contentDescription=" "
         app:iconTint="@color/design_default_color_secondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/no"
-        android:contentDescription=" "
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="97dp"
         android:background="@drawable/baseline_cancel_24"
+        android:contentDescription=" "
         app:layout_constraintBottom_toBottomOf="@+id/yes"
         app:layout_constraintStart_toStartOf="@+id/photoImageView" />
+
+    <View
+        android:id="@+id/frameView"
+        android:layout_width="370dp"
+        android:layout_height="250dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="22dp"
+        android:background="@drawable/border_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/photoImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

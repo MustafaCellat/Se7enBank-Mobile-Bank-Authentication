@@ -34,6 +34,8 @@ class Sayfa3 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sayfa3)
 
+        val frame = findViewById<View>(R.id.frameView)
+
         val text = findViewById<TextView>(R.id.textFront)
 
         val photoImageView = findViewById<ImageView>(R.id.photoImageView)
@@ -75,7 +77,8 @@ class Sayfa3 : AppCompatActivity() {
         captureButton.setOnClickListener {
             captureImage()
 
-            previewViewFront.visibility = View.INVISIBLE // veya View.GONE
+            frame.visibility = View.INVISIBLE
+            previewViewFront.visibility = View.INVISIBLE
             captureButton.visibility = View.INVISIBLE
             text.visibility = View.INVISIBLE
 
@@ -90,6 +93,7 @@ class Sayfa3 : AppCompatActivity() {
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
+                frame.visibility = View.VISIBLE
                 captureButton.visibility = View.VISIBLE
                 text.visibility = View.VISIBLE
                 previewViewFront.visibility = View.VISIBLE
