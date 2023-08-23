@@ -17,7 +17,14 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
+import java.io.OutputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.Base64
 
 class Sayfa3 : AppCompatActivity() {
 
@@ -89,6 +96,7 @@ class Sayfa3 : AppCompatActivity() {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
                 buttonForward.visibility = View.VISIBLE
+                sendCapturedPhotoToServer()
             }
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
@@ -111,9 +119,6 @@ class Sayfa3 : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    //val msg = "Photo captured!"
-                    //Toast.makeText(this@Sayfa3, msg, Toast.LENGTH_SHORT).show()
-
                     capturedPhotoFile = imageFile
                     showCapturedPhoto() // Çekilen fotoğrafı göster
                 }
@@ -133,5 +138,50 @@ class Sayfa3 : AppCompatActivity() {
                 .load(file)
                 .into(photoImageView)
         }
+    }
+
+    private fun sendCapturedPhotoToServer() {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val url = URL("http://192.168.1.24:5000/front_face")
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "POST"
+                connection.doOutput = true
+
+                val outputStream: OutputStream = connection.outputStream
+
+                val base64Image = convertFileToBase64(capturedPhotoFile)
+
+                outputStream.write(base64Image.toByteArray())
+                outputStream.flush()
+
+                val responseCode = connection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    // Sunucudan başarılı bir yanıt alındı, isteğin başarıyla gönderildiğini işaretler
+                    runOnUiThread {
+                        Toast.makeText(this@Sayfa3, "Fotoğraf başarıyla gönderildi.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    // Sunucudan hatalı bir yanıt alındı, istek başarısız oldu
+                    runOnUiThread {
+                        Toast.makeText(this@Sayfa3, "Fotoğraf gönderimi başarısız.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                // Bağlantıyı kapat
+                connection.disconnect()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Hata durumunda kullanıcıya bilgi ver
+                runOnUiThread {
+                    Toast.makeText(this@Sayfa3, "Hata: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun convertFileToBase64(file: File?): String {
+        val byteArray = file?.readBytes()
+        return Base64.getEncoder().encodeToString(byteArray)
     }
 }

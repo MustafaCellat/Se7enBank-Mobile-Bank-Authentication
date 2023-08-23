@@ -17,7 +17,15 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.OutputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.Base64
 
 class Sayfa4 : AppCompatActivity() {
 
@@ -42,7 +50,6 @@ class Sayfa4 : AppCompatActivity() {
 
         val text = findViewById<TextView>(R.id.textBack)
 
-
         val buttonForward = findViewById<Button>(R.id.button_forward)
         buttonForward.visibility = View.INVISIBLE
 
@@ -66,7 +73,6 @@ class Sayfa4 : AppCompatActivity() {
 
                 // Bind the preview use case to the camera provider's lifecycle
                 preview.setSurfaceProvider(findViewById<PreviewView>(R.id.previewViewBack).surfaceProvider)
-
                 val previewView = findViewById<PreviewView>(R.id.previewViewBack)
                 val display = previewView.display
                 if (display != null) {
@@ -102,6 +108,7 @@ class Sayfa4 : AppCompatActivity() {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
                 buttonForward.visibility = View.VISIBLE
+                sendCapturedPhotoToServer()
             }
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
@@ -124,9 +131,6 @@ class Sayfa4 : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    //val msg = "Photo captured!"
-                    //Toast.makeText(this@Sayfa4, msg, Toast.LENGTH_SHORT).show()
-
                     capturedPhotoFile = imageFile
                     showCapturedPhoto() // Çekilen fotoğrafı göster
                 }
@@ -146,5 +150,52 @@ class Sayfa4 : AppCompatActivity() {
                 .load(file)
                 .into(photoImageView)
         }
+    }
+
+    private fun sendCapturedPhotoToServer() {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val url = URL("http://192.168.1.24:5000/back_face")
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "POST"
+                connection.doOutput = true
+
+                val outputStream: OutputStream = connection.outputStream
+
+                val base64Image = convertFileToBase64(capturedPhotoFile)
+
+                outputStream.write(base64Image.toByteArray())
+                outputStream.flush()
+
+                val responseCode = connection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    // Sunucudan başarılı bir yanıt alındı, isteğin başarıyla gönderildiğini işaretler
+                    runOnUiThread {
+                        Toast.makeText(this@Sayfa4, "Fotoğraf başarıyla gönderildi.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    // Sunucudan hatalı bir yanıt alındı, istek başarısız oldu
+                    runOnUiThread {
+                        Toast.makeText(this@Sayfa4, "Fotoğraf gönderimi başarısız.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                // Bağlantıyı kapat
+                connection.disconnect()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun convertFileToBase64(file: File?): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        val buffer = ByteArray(1024)
+        val fileInputStream = file?.inputStream()
+        var bytesRead: Int
+        while (fileInputStream?.read(buffer).also { bytesRead = it!! } != -1) {
+            byteArrayOutputStream.write(buffer, 0, bytesRead)
+        }
+        return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray())
     }
 }

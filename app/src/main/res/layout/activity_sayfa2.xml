@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Sayfa2"
-    android:background="#0277C8">
+    android:background="@color/deniz">
 
     <TextView
         android:id="@+id/textView"

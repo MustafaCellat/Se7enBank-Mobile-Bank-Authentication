@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0277C8"
-    tools:context=".Sayfa3">
+    tools:context=".Sayfa3"
+    android:background="@color/deniz">
 
     <Button
         android:id="@+id/take_photo_front"
@@ -108,5 +108,4 @@
         app:layout_constraintEnd_toEndOf="@+id/photoImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
