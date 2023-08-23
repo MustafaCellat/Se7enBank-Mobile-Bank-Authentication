@@ -7,18 +7,6 @@
     tools:context=".Sayfa6"
     android:background="@color/deniz">
 
-    <Button
-        android:id="@+id/take_photo_face"
-        android:contentDescription=" "
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="31dp"
-        android:background="@drawable/baseline_circle_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <androidx.camera.view.PreviewView
         android:id="@+id/previewViewFace"
         android:layout_width="410dp"
@@ -31,7 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
-
     </androidx.camera.view.PreviewView>
 
     <TextView
@@ -47,51 +34,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_forward"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="300dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/forward"
-        app:layout_constraintBottom_toBottomOf="@+id/take_photo_face"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.272"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/previewViewFace"
-        app:layout_constraintVertical_bias="0.969" />
-
-    <ImageView
-        android:id="@+id/photoImageView"
-        android:layout_width="410dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginBottom="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/yes"
-        android:contentDescription=" "
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="97dp"
-        android:layout_marginBottom="31dp"
-        android:background="@drawable/baseline_check_circle_24"
-        app:iconTint="@color/design_default_color_secondary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/no"
-        android:contentDescription=" "
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="97dp"
-        android:background="@drawable/baseline_cancel_24"
-        app:layout_constraintBottom_toBottomOf="@+id/yes"
-        app:layout_constraintStart_toStartOf="@+id/photoImageView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

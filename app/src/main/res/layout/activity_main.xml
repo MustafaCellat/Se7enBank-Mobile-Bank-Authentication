@@ -7,41 +7,40 @@
     tools:context=".MainActivity"
     android:background="@color/deniz">
 
+    <View
+        android:layout_width="388dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/denizbank"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/button_musteri"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="280dp"
+        android:layout_width="252dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="300dp"
+        android:background="@drawable/rounded_button"
         android:backgroundTint="@color/white"
         android:text="Müşteri Ol"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button_giris"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:layout_marginTop="290dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/rounded_button"
         android:backgroundTint="#C30606"
         android:drawableTint="#000000"
         android:text="Giriş Yap"
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/button_musteri"
         app:layout_constraintEnd_toEndOf="@+id/button_musteri"
-        app:layout_constraintStart_toStartOf="@+id/button_musteri"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:layout_width="388dp"
-        android:layout_height="44dp"
-        android:background="@drawable/denizbank"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.042" />
+        app:layout_constraintStart_toStartOf="@+id/button_musteri" />
 </androidx.constraintlayout.widget.ConstraintLayout>

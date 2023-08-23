@@ -7,6 +7,15 @@
     tools:context=".Sayfa2"
     android:background="@color/deniz">
 
+    <View
+        android:layout_width="388dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/denizbank"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="350dp"
@@ -36,8 +45,8 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <View
-        android:layout_width="400dp"
-        android:layout_height="250dp"
+        android:layout_width="380dp"
+        android:layout_height="220dp"
         android:layout_marginTop="100dp"
         android:background="@drawable/ornek_kimlik"
         app:layout_constraintBottom_toBottomOf="parent"

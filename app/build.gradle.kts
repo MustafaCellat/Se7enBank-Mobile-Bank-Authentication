@@ -36,6 +36,11 @@ android {
 }
 
 dependencies {
+    implementation("com.daimajia.easing:library:2.1@aar")
+    implementation("com.daimajia.androidanimations:library:2.4@aar")
+
+
+
     implementation("androidx.cardview:cardview:1.0.0") // En son sürümü kontrol edin
 
     implementation("androidx.browser:browser:1.5.0") // touri için

@@ -1,0 +1,18 @@
+<!-- res/anim/text_animation.xml -->
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:fromYDelta="0"
+        android:toYDelta="-20dp"
+        android:duration="300"
+        android:startOffset="0"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
+
+    <translate
+        android:fromYDelta="-20dp"
+        android:toYDelta="0"
+        android:duration="300"
+        android:startOffset="300"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
+</set>
+
+
