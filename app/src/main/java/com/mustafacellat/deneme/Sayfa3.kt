@@ -3,11 +3,13 @@ package com.mustafacellat.deneme
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -61,10 +63,10 @@ class Sayfa3 : AppCompatActivity() {
         val preview = Preview.Builder().build()
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
-        buttonForward.setOnClickListener {
-            val intent = Intent(this, Sayfa4::class.java)
-            startActivity(intent)
-        }
+        //buttonForward.setOnClickListener {
+        //    val intent = Intent(this, Sayfa4::class.java)
+        //    startActivity(intent)
+        //}
 
         cameraProviderFuture.addListener(
             {
@@ -72,9 +74,21 @@ class Sayfa3 : AppCompatActivity() {
 
                 // Bind the preview use case to the camera provider's lifecycle
                 preview.setSurfaceProvider(findViewById<PreviewView>(R.id.previewViewFront).surfaceProvider)
-                imageCapture = ImageCapture.Builder()
-                    .setTargetRotation(findViewById<PreviewView>(R.id.previewViewFront).display.rotation)
-                    .build()
+                val previewView = findViewById<PreviewView>(R.id.previewViewFront)
+                val display = previewView.display
+                if (display != null) {
+                    imageCapture = ImageCapture.Builder()
+                        .setTargetRotation(display.rotation)
+                        .build()
+                } else {
+                    while (display == null) {
+                        // Eğer display null ise sayfayı yeniden başlat
+                        val intent = Intent(this, Sayfa3::class.java)
+                        finish()
+                        startActivity(intent)
+                        return@addListener
+                    }
+                }
 
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
             }, ContextCompat.getMainExecutor(this)
@@ -140,6 +154,29 @@ class Sayfa3 : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ResourceType")
+    private fun showAlertDialog(message: String) {
+
+        val alertDialogView = LayoutInflater.from(this).inflate(R.drawable.custom_alert_dialog, null)
+
+        val messageTextView = alertDialogView.findViewById<TextView>(R.id.messageTextView)
+        messageTextView.text = message
+
+        val okButton = alertDialogView.findViewById<Button>(R.id.okButton)
+
+        val builder = AlertDialog.Builder(this)
+            .setView(alertDialogView)
+
+        val alertDialog = builder.create()
+        okButton.setOnClickListener {
+            alertDialog.dismiss()
+            val intent = Intent(this, Sayfa3::class.java)
+            startActivity(intent)
+        }
+
+        alertDialog.show()
+    }
+
     private fun sendCapturedPhotoToServer() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
@@ -158,16 +195,35 @@ class Sayfa3 : AppCompatActivity() {
                 val responseCode = connection.responseCode
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     // Sunucudan başarılı bir yanıt alındı, isteğin başarıyla gönderildiğini işaretler
+                    val response = connection.inputStream.bufferedReader().use { it.readText() }
                     runOnUiThread {
+                        val buttonForward = findViewById<Button>(R.id.button_forward)
+                        buttonForward.setOnClickListener {
+                            if (response == "Kimlik algılanamadı. Lütfen tekrar fotoğraf çekiniz.") {
+                                //val buttonForward = findViewById<Button>(R.id.button_forward)
+                                //buttonForward.visibility = View.VISIBLE
+                                //val intent = Intent(this@Sayfa3, Sayfa3::class.java)
+                                //startActivity(intent)
+                                showAlertDialog("Kimlik algılanamadı lütfen kimliğinizi tekrar çekiniz.")
+                            } else if (response == "Ön yüz tespit edilemedi.") {
+                                showAlertDialog("Kimlikteki yüzünüz tespit edilemedi lütfen kimliğinizi tekrar çekiniz.")
+                            } else if (response.startsWith("Başarısız:")) {
+                                showAlertDialog("Kimlikteki yüzünüz tespit edilemedi lütfen kimliğinizi tekrar çekiniz.")
+                            } else {
+                                val intent = Intent(this@Sayfa3, Sayfa4::class.java)
+                                startActivity(intent)
+                            }
+                        }
                         Toast.makeText(this@Sayfa3, "Fotoğraf başarıyla gönderildi.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     // Sunucudan hatalı bir yanıt alındı, istek başarısız oldu
                     runOnUiThread {
+                        val intent = Intent(this@Sayfa3, Sayfa3::class.java)
+                        startActivity(intent)
                         Toast.makeText(this@Sayfa3, "Fotoğraf gönderimi başarısız.", Toast.LENGTH_SHORT).show()
                     }
                 }
-
                 // Bağlantıyı kapat
                 connection.disconnect()
             } catch (e: Exception) {

@@ -36,10 +36,10 @@ android {
 }
 
 dependencies {
+    implementation("com.intuit.sdp:sdp-android:1.1.0")
+
     implementation("com.daimajia.easing:library:2.1@aar")
     implementation("com.daimajia.androidanimations:library:2.4@aar")
-
-
 
     implementation("androidx.cardview:cardview:1.0.0") // En son sürümü kontrol edin
 

@@ -56,7 +56,7 @@
         android:layout_marginStart="300dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/forward"
-        android:tint="#ffffff"
+        android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/take_photo_front"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.272"
@@ -99,13 +99,12 @@
 
     <View
         android:id="@+id/frameView"
-        android:layout_width="370dp"
-        android:layout_height="250dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="@dimen/_284sdp"
+        android:layout_height="@dimen/_212sdp"
         android:layout_marginBottom="22dp"
         android:background="@drawable/border_rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/photoImageView"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textFront"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -173,7 +173,7 @@ class Sayfa6 : AppCompatActivity() {
                         startActivity(intent)
                     }
                     else {
-                        showAlertDialog("Maalesef kimliğin size ait olmadığı gözükmektedir.")
+                        showAlertDialog("Maalesef kimlikteki fotoğrafınızla yüzünüz uyuşmamaktadır.")
                     }
                     Toast.makeText(this@Sayfa6, response, Toast.LENGTH_SHORT).show()
                 }
