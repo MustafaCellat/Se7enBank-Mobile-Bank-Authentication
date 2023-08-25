@@ -8,8 +8,8 @@
     android:background="@color/deniz">
 
     <View
-        android:layout_width="388dp"
-        android:layout_height="42dp"
+        android:layout_width="@dimen/_300sdp"
+        android:layout_height="@dimen/_32sdp"
         android:layout_marginTop="15dp"
         android:background="@drawable/denizbank"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,8 +18,8 @@
 
     <Button
         android:id="@+id/button_musteri"
-        android:layout_width="252dp"
-        android:layout_height="65dp"
+        android:layout_width="@dimen/_210sdp"
+        android:layout_height="@dimen/_44sdp"
         android:layout_marginBottom="300dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="@color/white"
@@ -32,8 +32,8 @@
 
     <Button
         android:id="@+id/button_giris"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/_210sdp"
+        android:layout_height="@dimen/_44sdp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="#C30606"

@@ -8,12 +8,14 @@
     android:background="@color/deniz">
 
     <View
-        android:layout_width="388dp"
-        android:layout_height="42dp"
+        android:layout_width="@dimen/_300sdp"
+        android:layout_height="@dimen/_32sdp"
         android:layout_marginTop="15dp"
+        android:layout_marginBottom="60dp"
         android:background="@drawable/denizbank"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -23,8 +25,8 @@
         android:layout_marginBottom="350dp"
         android:gravity="center"
         android:text="Üyelik işleminizi gerçekleştirebilmek için kimlik kartınızın ön ve arka yüzünü çekiniz."
-        android:textSize="22sp"
         android:textColor="@color/white"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
@@ -33,24 +35,27 @@
 
     <Button
         android:id="@+id/button_forward"
-        android:layout_width="80dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="300dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="80dp"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginStart="280dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/forward"
         android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <View
-        android:layout_width="380dp"
-        android:layout_height="220dp"
-        android:layout_marginTop="100dp"
+        android:id="@+id/view3"
+        android:layout_width="@dimen/_300sdp"
+        android:layout_height="@dimen/_180sdp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="200dp"
         android:background="@drawable/ornek_kimlik"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
