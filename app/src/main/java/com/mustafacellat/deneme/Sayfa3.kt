@@ -1,7 +1,9 @@
 package com.mustafacellat.deneme
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +31,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Base64
 
+
 class Sayfa3 : AppCompatActivity() {
 
     private val cameraProviderFuture by lazy {
@@ -38,10 +42,16 @@ class Sayfa3 : AppCompatActivity() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private var capturedPhotoFile: File? = null
 
+    private val REQUEST_CODE = 1
+
     @SuppressLint("MissingInflatedId", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sayfa3)
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CODE)
+        }
 
         val frame = findViewById<View>(R.id.frameView)
 
@@ -62,11 +72,6 @@ class Sayfa3 : AppCompatActivity() {
 
         val preview = Preview.Builder().build()
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-        //buttonForward.setOnClickListener {
-        //    val intent = Intent(this, Sayfa4::class.java)
-        //    startActivity(intent)
-        //}
 
         cameraProviderFuture.addListener(
             {
@@ -110,7 +115,12 @@ class Sayfa3 : AppCompatActivity() {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
                 buttonForward.visibility = View.VISIBLE
-                sendCapturedPhotoToServer()
+                //sendCapturedPhotoToServer()
+                val button = findViewById<Button>(R.id.button_forward)
+                button.setOnClickListener {
+                    val intent = Intent(this, Sayfa4::class.java)
+                    startActivity(intent)
+                }
             }
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
@@ -122,6 +132,34 @@ class Sayfa3 : AppCompatActivity() {
                 photoImageView.setImageDrawable(null)
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                showRationaleForCamera()
+            }
+        }
+    }
+
+    private fun showRationaleForCamera() {
+        val alertDialog = AlertDialog.Builder(this)
+            .setTitle("İzin Gerekli")
+            .setMessage("Fotoğraf çekmek için kamera izni gereklidir.")
+            .setPositiveButton("Tamam") { dialog, which ->
+                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CODE)
+                } else {
+                    Toast.makeText(this, "Lütfen cihazınızın ayarlarından kamera iznini verin.", Toast.LENGTH_LONG).show()
+                }
+            }
+            .setNegativeButton("İptal") { dialog, which ->
+            }
+            .create()
+
+        alertDialog.show()
     }
 
     private fun captureImage() {

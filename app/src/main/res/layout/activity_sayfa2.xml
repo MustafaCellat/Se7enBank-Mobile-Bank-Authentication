@@ -11,9 +11,7 @@
         android:layout_width="@dimen/_300sdp"
         android:layout_height="@dimen/_32sdp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="60dp"
         android:background="@drawable/denizbank"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />

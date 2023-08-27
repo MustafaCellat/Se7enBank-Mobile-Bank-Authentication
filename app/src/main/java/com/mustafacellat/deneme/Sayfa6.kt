@@ -71,7 +71,9 @@ class Sayfa6 : AppCompatActivity() {
                     handler.postDelayed({
                         captureImage()
                         handler.postDelayed({
-                            sendCapturedPhotoToServer()
+                            //sendCapturedPhotoToServer()
+                            val intent = Intent(this, Sayfa7::class.java)
+                            startActivity(intent)
                         }, 1000) // captureImage işleminden 1 saniye sonra sendCapturedPhotoToServer işlemi başlar
                     }, 2000)
 

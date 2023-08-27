@@ -8,6 +8,7 @@
     android:background="@color/deniz">
 
     <View
+        android:id="@+id/view5"
         android:layout_width="@dimen/_300sdp"
         android:layout_height="@dimen/_32sdp"
         android:layout_marginTop="15dp"
@@ -17,30 +18,44 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_musteri"
-        android:layout_width="@dimen/_210sdp"
-        android:layout_height="@dimen/_44sdp"
-        android:layout_marginBottom="300dp"
-        android:background="@drawable/rounded_button"
-        android:backgroundTint="@color/white"
-        android:text="Müşteri Ol"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/button_giris"
         android:layout_width="@dimen/_210sdp"
         android:layout_height="@dimen/_44sdp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="82dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="#C30606"
         android:drawableTint="#000000"
         android:text="Giriş Yap"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/button_musteri"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
         app:layout_constraintEnd_toEndOf="@+id/button_musteri"
-        app:layout_constraintStart_toStartOf="@+id/button_musteri" />
+        app:layout_constraintStart_toStartOf="@+id/button_musteri"
+        app:layout_constraintTop_toTopOf="@+id/view4" />
+
+    <Button
+        android:id="@+id/button_musteri"
+        android:layout_width="@dimen/_210sdp"
+        android:layout_height="@dimen/_44sdp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/white"
+        android:text="Müşteri Ol"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_giris" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="@dimen/_270sdp"
+        android:layout_height="@dimen/_160sdp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#b9daf1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

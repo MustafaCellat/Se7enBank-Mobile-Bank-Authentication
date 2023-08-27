@@ -105,7 +105,12 @@ class Sayfa4 : AppCompatActivity() {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
                 buttonForward.visibility = View.VISIBLE
-                sendCapturedPhotoToServer()
+                //sendCapturedPhotoToServer()
+                val button = findViewById<Button>(R.id.button_forward)
+                button.setOnClickListener {
+                    val intent = Intent(this, Sayfa5::class.java)
+                    startActivity(intent)
+                }
             }
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
