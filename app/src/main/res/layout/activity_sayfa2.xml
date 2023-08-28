@@ -8,53 +8,54 @@
     android:background="@color/deniz">
 
     <View
-        android:id="@+id/view99"
-        android:layout_width="@dimen/_300sdp"
-        android:layout_height="@dimen/_32sdp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/denizbank"
+        android:id="@+id/view5"
+        android:layout_width="@dimen/_290sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/se7en"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="350dp"
-        android:gravity="center"
-        android:text="Üyelik işleminizi gerçekleştirebilmek için kimlik kartınızın ön ve arka yüzünü çekiniz."
-        android:textColor="@color/white"
-        android:textSize="@dimen/_18ssp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_forward"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:layout_marginStart="280dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/forward"
-        android:tint="@color/white"
+        android:id="@+id/button_giris"
+        android:layout_width="@dimen/_210sdp"
+        android:layout_height="@dimen/_44sdp"
+        android:layout_marginBottom="82dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#C30606"
+        android:drawableTint="#000000"
+        android:text="Giriş Yap"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintEnd_toEndOf="@+id/button_musteri"
+        app:layout_constraintStart_toStartOf="@+id/button_musteri"
+        app:layout_constraintTop_toTopOf="@+id/view4" />
+
+    <Button
+        android:id="@+id/button_musteri"
+        android:layout_width="@dimen/_210sdp"
+        android:layout_height="@dimen/_44sdp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/white"
+        android:text="Müşteri Ol"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_giris" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="@dimen/_270sdp"
+        android:layout_height="@dimen/_160sdp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#b9daf1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-    <View
-        android:id="@+id/view3"
-        android:layout_width="@dimen/_300sdp"
-        android:layout_height="@dimen/_180sdp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="200dp"
-        android:background="@drawable/ornek_kimlik"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

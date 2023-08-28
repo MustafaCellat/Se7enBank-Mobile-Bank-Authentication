@@ -4,45 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/deniz"
-    tools:context=".Sayfa3">
+    tools:context=".Sayfa3"
+    android:background="@color/deniz">
 
-    <Button
-        android:id="@+id/take_photo_front"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/baseline_circle_24"
-        android:contentDescription=" "
-        app:layout_constraintBottom_toBottomOf="parent"
+    <View
+        android:id="@+id/view99"
+        android:layout_width="@dimen/_290sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/se7en"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/previewViewFront" />
-
-    <androidx.camera.view.PreviewView
-        android:id="@+id/previewViewFront"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_430sdp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textFront"
-        app:layout_constraintStart_toStartOf="@+id/textFront"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-    </androidx.camera.view.PreviewView>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textFront"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:id="@+id/textView"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="350dp"
         android:gravity="center"
-        android:text="Lütfen kimliğinizin ön yüzünü belirtilen alanın içinde çekiniz"
+        android:text="Üyelik işleminizi gerçekleştirebilmek için kimlik kartınızın ön ve arka yüzünü çekiniz."
         android:textColor="@color/white"
-        android:textSize="@dimen/_16ssp"
-        app:layout_constraintBottom_toTopOf="@+id/previewViewFront"
+        android:textSize="@dimen/_18ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,56 +37,24 @@
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_50sdp"
         android:layout_marginStart="280dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/forward"
         android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/yes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/yes" />
-
-    <ImageView
-        android:id="@+id/photoImageView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_430sdp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/yes"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="64dp"
-        android:background="@drawable/baseline_check_circle_24"
-        android:contentDescription=" "
-        app:iconTint="@color/design_default_color_secondary"
-        app:layout_constraintBottom_toBottomOf="@+id/take_photo_front"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/take_photo_front"
-        app:layout_constraintTop_toTopOf="@+id/take_photo_front" />
-
-    <Button
-        android:id="@+id/no"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="64dp"
-        android:background="@drawable/baseline_cancel_24"
-        android:contentDescription=" "
-        app:layout_constraintBottom_toBottomOf="@+id/take_photo_front"
-        app:layout_constraintEnd_toStartOf="@+id/take_photo_front"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/take_photo_front" />
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <View
-        android:id="@+id/frameView"
-        android:layout_width="@dimen/_284sdp"
-        android:layout_height="@dimen/_198sdp"
-        android:background="@drawable/border_rectangle"
-        app:layout_constraintBottom_toBottomOf="@+id/previewViewFront"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textFront"
-        app:layout_constraintTop_toTopOf="@+id/previewViewFront" />
+        android:id="@+id/view3"
+        android:layout_width="@dimen/_300sdp"
+        android:layout_height="@dimen/_180sdp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="200dp"
+        android:background="@drawable/ornek_kimlik"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

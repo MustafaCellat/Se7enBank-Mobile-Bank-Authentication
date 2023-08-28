@@ -7,30 +7,56 @@
     tools:context=".Sayfa6"
     android:background="@color/deniz">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/previewViewFace"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_430sdp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textFace"
-        app:layout_constraintStart_toStartOf="@+id/textFace"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-    </androidx.camera.view.PreviewView>
+    <View
+        android:id="@+id/view6"
+        android:layout_width="@dimen/_290sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/se7en"
+        app:layout_constraintEnd_toEndOf="@+id/text_canli"
+        app:layout_constraintStart_toStartOf="@+id/text_canli"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="@dimen/_153sdp"
+        android:layout_height="@dimen/_153sdp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/cagri_merkezi"
+        app:layout_constraintBottom_toTopOf="@+id/text_canli"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/text_canli"
+        app:layout_constraintTop_toBottomOf="@+id/view6" />
 
     <TextView
-        android:id="@+id/textFace"
+        android:id="@+id/text_canli"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="180dp"
         android:gravity="center"
-        android:text="Lütfen yüzünüzü sabit bir şekilde ekrana tutunuz"
+        android:text="Canlı görüşmeye aktarılıyorsunuz lütfen bekleyiniz..."
         android:textColor="@color/white"
         android:textSize="@dimen/_16ssp"
-        app:layout_constraintBottom_toTopOf="@+id/previewViewFace"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_forward"
+        android:layout_width="@dimen/_230sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="140dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#C30606"
+        android:text="Şimdi Görüşmeye Bağlanın"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/text_canli"
+        app:layout_constraintStart_toStartOf="@+id/text_canli"
+        app:layout_constraintTop_toBottomOf="@+id/text_canli" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+

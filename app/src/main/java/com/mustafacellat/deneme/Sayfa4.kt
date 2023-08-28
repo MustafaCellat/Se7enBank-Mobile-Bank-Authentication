@@ -1,7 +1,9 @@
 package com.mustafacellat.deneme
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,17 +19,18 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Base64
+
 
 class Sayfa4 : AppCompatActivity() {
 
@@ -39,18 +42,24 @@ class Sayfa4 : AppCompatActivity() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private var capturedPhotoFile: File? = null
 
+    private val REQUEST_CODE = 1
+
     @SuppressLint("MissingInflatedId", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sayfa4)
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CODE)
+        }
+
         val frame = findViewById<View>(R.id.frameView)
 
-        val previewViewBack = findViewById<PreviewView>(R.id.previewViewBack)
+        val text = findViewById<TextView>(R.id.textFront)
 
         val photoImageView = findViewById<ImageView>(R.id.photoImageView)
 
-        val text = findViewById<TextView>(R.id.textBack)
+        val previewViewFront = findViewById<PreviewView>(R.id.previewViewFront)
 
         val buttonForward = findViewById<Button>(R.id.button_forward)
         buttonForward.visibility = View.INVISIBLE
@@ -69,8 +78,8 @@ class Sayfa4 : AppCompatActivity() {
                 cameraProvider = cameraProviderFuture.get()
 
                 // Bind the preview use case to the camera provider's lifecycle
-                preview.setSurfaceProvider(findViewById<PreviewView>(R.id.previewViewBack).surfaceProvider)
-                val previewView = findViewById<PreviewView>(R.id.previewViewBack)
+                preview.setSurfaceProvider(findViewById<PreviewView>(R.id.previewViewFront).surfaceProvider)
+                val previewView = findViewById<PreviewView>(R.id.previewViewFront)
                 val display = previewView.display
                 if (display != null) {
                     imageCapture = ImageCapture.Builder()
@@ -85,16 +94,17 @@ class Sayfa4 : AppCompatActivity() {
                         return@addListener
                     }
                 }
+
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
             }, ContextCompat.getMainExecutor(this)
         )
 
-        val captureButton = findViewById<Button>(R.id.take_photo_back)
+        val captureButton = findViewById<Button>(R.id.take_photo_front)
         captureButton.setOnClickListener {
             captureImage()
 
             frame.visibility = View.INVISIBLE
-            previewViewBack.visibility = View.INVISIBLE
+            previewViewFront.visibility = View.INVISIBLE
             captureButton.visibility = View.INVISIBLE
             text.visibility = View.INVISIBLE
 
@@ -118,10 +128,38 @@ class Sayfa4 : AppCompatActivity() {
                 frame.visibility = View.VISIBLE
                 captureButton.visibility = View.VISIBLE
                 text.visibility = View.VISIBLE
-                previewViewBack.visibility = View.VISIBLE
+                previewViewFront.visibility = View.VISIBLE
                 photoImageView.setImageDrawable(null)
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                showRationaleForCamera()
+            }
+        }
+    }
+
+    private fun showRationaleForCamera() {
+        val alertDialog = AlertDialog.Builder(this)
+            .setTitle("İzin Gerekli")
+            .setMessage("Fotoğraf çekmek için kamera izni gereklidir.")
+            .setPositiveButton("Tamam") { dialog, which ->
+                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CODE)
+                } else {
+                    Toast.makeText(this, "Lütfen cihazınızın ayarlarından kamera iznini verin.", Toast.LENGTH_LONG).show()
+                }
+            }
+            .setNegativeButton("İptal") { dialog, which ->
+            }
+            .create()
+
+        alertDialog.show()
     }
 
     private fun captureImage() {
@@ -180,7 +218,7 @@ class Sayfa4 : AppCompatActivity() {
     private fun sendCapturedPhotoToServer() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("http://192.168.1.24:5000/back_face")
+                val url = URL("http://192.168.1.24:5000/front_face")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.doOutput = true
@@ -200,9 +238,16 @@ class Sayfa4 : AppCompatActivity() {
                         val buttonForward = findViewById<Button>(R.id.button_forward)
                         buttonForward.setOnClickListener {
                             if (response == "Kimlik algılanamadı. Lütfen tekrar fotoğraf çekiniz.") {
+                                //val buttonForward = findViewById<Button>(R.id.button_forward)
+                                //buttonForward.visibility = View.VISIBLE
+                                //val intent = Intent(this@Sayfa3, Sayfa3::class.java)
+                                //startActivity(intent)
                                 showAlertDialog("Kimlik algılanamadı lütfen kimliğinizi tekrar çekiniz.")
-                            }
-                            else {
+                            } else if (response == "Ön yüz tespit edilemedi.") {
+                                showAlertDialog("Kimlikteki yüzünüz tespit edilemedi lütfen kimliğinizi tekrar çekiniz.")
+                            } else if (response.startsWith("Başarısız:")) {
+                                showAlertDialog("Kimlikteki yüzünüz tespit edilemedi lütfen kimliğinizi tekrar çekiniz.")
+                            } else {
                                 val intent = Intent(this@Sayfa4, Sayfa5::class.java)
                                 startActivity(intent)
                             }
@@ -217,23 +262,20 @@ class Sayfa4 : AppCompatActivity() {
                         Toast.makeText(this@Sayfa4, "Fotoğraf gönderimi başarısız.", Toast.LENGTH_SHORT).show()
                     }
                 }
-
                 // Bağlantıyı kapat
                 connection.disconnect()
             } catch (e: Exception) {
                 e.printStackTrace()
+                // Hata durumunda kullanıcıya bilgi ver
+                runOnUiThread {
+                    Toast.makeText(this@Sayfa4, "Hata: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
     private fun convertFileToBase64(file: File?): String {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        val buffer = ByteArray(1024)
-        val fileInputStream = file?.inputStream()
-        var bytesRead: Int
-        while (fileInputStream?.read(buffer).also { bytesRead = it!! } != -1) {
-            byteArrayOutputStream.write(buffer, 0, bytesRead)
-        }
-        return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray())
+        val byteArray = file?.readBytes()
+        return Base64.getEncoder().encodeToString(byteArray)
     }
 }

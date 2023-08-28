@@ -2,9 +2,12 @@ package com.mustafacellat.deneme
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.widget.Button
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -12,10 +15,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val button = findViewById<Button>(R.id.button_musteri)
-        button.setOnClickListener {
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
             val intent = Intent(this, Sayfa2::class.java)
             startActivity(intent)
+
+        }, 4000)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.black)
         }
+
+
     }
 }
