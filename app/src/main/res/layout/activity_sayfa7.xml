@@ -9,8 +9,8 @@
 
     <View
         android:id="@+id/view7"
-        android:layout_width="388dp"
-        android:layout_height="42dp"
+        android:layout_width="@dimen/_300sdp"
+        android:layout_height="@dimen/_32sdp"
         android:layout_marginTop="15dp"
         android:background="@drawable/denizbank"
         app:layout_constraintEnd_toEndOf="@+id/textView3"
@@ -19,8 +19,8 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/_77sdp"
+        android:layout_height="@dimen/_77ssp"
         android:layout_marginTop="100dp"
         android:background="@drawable/baseline_done_outline_24"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
@@ -35,7 +35,7 @@
         android:gravity="center"
         android:text="Bankamıza Hoşgeldiniz!"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="@dimen/_23ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

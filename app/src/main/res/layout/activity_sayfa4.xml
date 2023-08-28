@@ -40,7 +40,7 @@
         android:gravity="center"
         android:text="Lütfen kimliğinizin arka yüzünü belirtilen alanın içinde çekiniz"
         android:textColor="@color/white"
-        android:textSize="22sp"
+        android:textSize="@dimen/_16ssp"
         app:layout_constraintBottom_toTopOf="@+id/previewViewBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
