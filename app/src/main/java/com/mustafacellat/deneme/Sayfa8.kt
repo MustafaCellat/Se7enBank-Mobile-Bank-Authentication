@@ -32,4 +32,8 @@ class Sayfa8 : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    override fun onBackPressed() {
+        // Geri tuşuna basıldığında hiçbir şey yapma
+    }
 }

@@ -2,7 +2,9 @@ package com.mustafacellat.deneme
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -44,10 +46,16 @@ class Sayfa4 : AppCompatActivity() {
 
     private val REQUEST_CODE = 1
 
+    private lateinit var benzersiz: String // Sınıf seviyesinde tanımlanıyor
+
     @SuppressLint("MissingInflatedId", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sayfa4)
+
+        val sharedPreferences: SharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        benzersiz = sharedPreferences.getString("uniqueValue", null) ?: ""
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CODE)
@@ -114,13 +122,12 @@ class Sayfa4 : AppCompatActivity() {
             buttonYes.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
-                buttonForward.visibility = View.VISIBLE
-                //sendCapturedPhotoToServer()
-                val button = findViewById<Button>(R.id.button_forward)
-                button.setOnClickListener {
-                    val intent = Intent(this, Sayfa5::class.java)
-                    startActivity(intent)
-                }
+                sendCapturedPhotoToServer()
+                //val button = findViewById<Button>(R.id.button_forward)
+                //button.setOnClickListener {
+                //    val intent = Intent(this, Sayfa5::class.java)
+                //    startActivity(intent)
+                //}
             }
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
@@ -223,6 +230,8 @@ class Sayfa4 : AppCompatActivity() {
                 connection.requestMethod = "POST"
                 connection.doOutput = true
 
+                connection.setRequestProperty("unique", benzersiz)
+
                 val outputStream: OutputStream = connection.outputStream
 
                 val base64Image = convertFileToBase64(capturedPhotoFile)
@@ -236,18 +245,19 @@ class Sayfa4 : AppCompatActivity() {
                     val response = connection.inputStream.bufferedReader().use { it.readText() }
                     runOnUiThread {
                         val buttonForward = findViewById<Button>(R.id.button_forward)
+                        buttonForward.visibility = View.VISIBLE
                         buttonForward.setOnClickListener {
-                            if (response == "Kimlik algılanamadı. Lütfen tekrar fotoğraf çekiniz.") {
-                                //val buttonForward = findViewById<Button>(R.id.button_forward)
-                                //buttonForward.visibility = View.VISIBLE
-                                //val intent = Intent(this@Sayfa3, Sayfa3::class.java)
-                                //startActivity(intent)
-                                showAlertDialog("Kimlik algılanamadı lütfen kimliğinizi tekrar çekiniz.")
-                            } else if (response == "Ön yüz tespit edilemedi.") {
-                                showAlertDialog("Kimlikteki yüzünüz tespit edilemedi lütfen kimliğinizi tekrar çekiniz.")
-                            } else if (response.startsWith("Başarısız:")) {
-                                showAlertDialog("Kimlikteki yüzünüz tespit edilemedi lütfen kimliğinizi tekrar çekiniz.")
-                            } else {
+                            if (response.startsWith("Alan Sonucu: Kimlik algılanamadı.")) {
+                                showAlertDialog("1Kimlik algılanamadı lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
+                            }else if(response =="Alan Sonucu: Kimlik algılandı!,  Kimlik Geçersiz. (is_valid boolean variable = False)") {
+                                showAlertDialog("2Kimlik algılanamadı lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
+                            }else if(response =="Alan Sonucu: Kimlik algılandı!,  None") {
+                                showAlertDialog("3Kimlik algılanamadı lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
+                            }else if (response == "Ön yüz tespit edilemedi.") {
+                                showAlertDialog("Kimlikteki yüzünüz tespit edilemedi lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
+                            }else if (response.startsWith("Başarısız:")) {
+                                showAlertDialog("Lütfen bağlantınızı kontrol ediniz.")
+                            }else {
                                 val intent = Intent(this@Sayfa4, Sayfa5::class.java)
                                 startActivity(intent)
                             }
@@ -277,5 +287,9 @@ class Sayfa4 : AppCompatActivity() {
     private fun convertFileToBase64(file: File?): String {
         val byteArray = file?.readBytes()
         return Base64.getEncoder().encodeToString(byteArray)
+    }
+
+    override fun onBackPressed() {
+        // Geri tuşuna basıldığında hiçbir şey yapma
     }
 }

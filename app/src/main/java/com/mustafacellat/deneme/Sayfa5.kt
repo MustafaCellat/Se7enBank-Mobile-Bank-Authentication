@@ -104,13 +104,8 @@ class Sayfa5 : AppCompatActivity() {
             buttonYes.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
-                buttonForward.visibility = View.VISIBLE
-                //sendCapturedPhotoToServer()
+                sendCapturedPhotoToServer()
                 val button = findViewById<Button>(R.id.button_forward)
-                button.setOnClickListener {
-                    val intent = Intent(this, Sayfa6::class.java)
-                    startActivity(intent)
-                }
             }
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
@@ -198,11 +193,17 @@ class Sayfa5 : AppCompatActivity() {
                     val response = connection.inputStream.bufferedReader().use { it.readText() }
                     runOnUiThread {
                         val buttonForward = findViewById<Button>(R.id.button_forward)
+                        buttonForward.visibility = View.VISIBLE
                         buttonForward.setOnClickListener {
-                            if (response == "Kimlik algılanamadı. Lütfen tekrar fotoğraf çekiniz.") {
+                            if (response.startsWith("Alan Sonucu: Kimlik algılanamadı.")) {
                                 showAlertDialog("Kimlik algılanamadı lütfen kimliğinizi tekrar çekiniz.")
-                            }
-                            else {
+                            }else if (response.startsWith("Alan Sonucu: Kimlik algılandı!,  Barkod okunurken hata meydana geldi.")) {
+                                showAlertDialog("Barkod okunamadı lütfen kimliğinizin arka yüzünü tekrar çekiniz.")
+                            }else if (response.endsWith("Kimlik Geçersiz. (is_valid boolean variable = False)")) {
+                                showAlertDialog("Kimlik algılanamadı lütfen kimliğinizi tekrar çekiniz.")
+                            }else if(response.endsWith("None")) {
+                                showAlertDialog("Kimlik algılanamadı lütfen kimliğinizi tekrar çekiniz.")
+                            }else {
                                 val intent = Intent(this@Sayfa5, Sayfa6::class.java)
                                 startActivity(intent)
                             }
@@ -235,5 +236,9 @@ class Sayfa5 : AppCompatActivity() {
             byteArrayOutputStream.write(buffer, 0, bytesRead)
         }
         return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray())
+    }
+
+    override fun onBackPressed() {
+        // Geri tuşuna basıldığında hiçbir şey yapma
     }
 }

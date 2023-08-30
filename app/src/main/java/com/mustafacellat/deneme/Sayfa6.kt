@@ -42,4 +42,8 @@ class Sayfa6 : AppCompatActivity() {
             .repeat(YoYo.INFINITE)
             .playOn(text_canli)
     }
+
+    override fun onBackPressed() {
+        // Geri tuşuna basıldığında hiçbir şey yapma
+    }
 }

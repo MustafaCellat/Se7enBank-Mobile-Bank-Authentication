@@ -71,9 +71,7 @@ class Sayfa7 : AppCompatActivity() {
                     handler.postDelayed({
                         captureImage()
                         handler.postDelayed({
-                            //sendCapturedPhotoToServer()
-                            val intent = Intent(this, Sayfa8::class.java)
-                            startActivity(intent)
+                            sendCapturedPhotoToServer()
                         }, 1000) // captureImage işleminden 1 saniye sonra sendCapturedPhotoToServer işlemi başlar
                     }, 2000)
 
@@ -161,21 +159,20 @@ class Sayfa7 : AppCompatActivity() {
                 outputStream.write(base64Image.toByteArray())
                 outputStream.flush()
 
-                //val responseCode = connection.responseCode
-
                 val response = connection.inputStream.bufferedReader().use { it.readText() }
 
                 // Sunucudan gelen cevabı işle
                 // Örneğin, Toast mesajı olarak göster
                 runOnUiThread {
-                    if (response == "Sonuç: Aynı kişi"){
-                        //val buttonForward = findViewById<Button>(R.id.button_forward)
-                        //buttonForward.visibility = View.VISIBLE
+                    if (response.startsWith("Sonuç: Farklı kişiler")){
+                        showAlertDialog("Maalesef kimlikteki fotoğrafınızla yüzünüz uyuşmamaktadır.")
+                    }else if (response.endsWith("TC no eşleşmedi.")) {
+                        showAlertDialog("TC kimlik numaranız uyuşmamaktadır.")
+                    }else if (response.startsWith("Başarısız:")) {
+                        showAlertDialog("Maalesef kimlikteki fotoğrafınızla yüzünüz uyuşmamaktadır.")
+                    }else {
                         val intent = Intent(this@Sayfa7, Sayfa8::class.java)
                         startActivity(intent)
-                    }
-                    else {
-                        showAlertDialog("Maalesef kimlikteki fotoğrafınızla yüzünüz uyuşmamaktadır.")
                     }
                     Toast.makeText(this@Sayfa7, response, Toast.LENGTH_SHORT).show()
                 }
@@ -189,5 +186,9 @@ class Sayfa7 : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        // Geri tuşuna basıldığında hiçbir şey yapma
     }
 }

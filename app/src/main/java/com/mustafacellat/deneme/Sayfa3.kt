@@ -12,8 +12,13 @@ class Sayfa3 : AppCompatActivity() {
 
         val button = findViewById<Button>(R.id.button_forward)
         button.setOnClickListener {
+
             val intent = Intent(this, Sayfa4::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onBackPressed() {
+        // Geri tuşuna basıldığında hiçbir şey yapma
     }
 }
