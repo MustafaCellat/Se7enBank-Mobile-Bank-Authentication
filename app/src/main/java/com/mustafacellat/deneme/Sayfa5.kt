@@ -50,7 +50,10 @@ class Sayfa5 : AppCompatActivity() {
 
         val photoImageView = findViewById<ImageView>(R.id.photoImageView)
 
-        val text = findViewById<TextView>(R.id.textBack)
+        val textBack = findViewById<TextView>(R.id.textBack)
+
+        val textCheck = findViewById<TextView>(R.id.textCheck)
+        textCheck.visibility = View.INVISIBLE
 
         val buttonForward = findViewById<Button>(R.id.button_forward)
         buttonForward.visibility = View.INVISIBLE
@@ -96,23 +99,26 @@ class Sayfa5 : AppCompatActivity() {
             frame.visibility = View.INVISIBLE
             previewViewBack.visibility = View.INVISIBLE
             captureButton.visibility = View.INVISIBLE
-            text.visibility = View.INVISIBLE
+            textBack.visibility = View.INVISIBLE
 
             buttonYes.visibility = View.VISIBLE
             buttonNo.visibility = View.VISIBLE
+            textCheck.visibility = View.VISIBLE
 
             buttonYes.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
+                textCheck.visibility = View.INVISIBLE
                 sendCapturedPhotoToServer()
                 val button = findViewById<Button>(R.id.button_forward)
             }
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
+                textCheck.visibility = View.INVISIBLE
                 frame.visibility = View.VISIBLE
                 captureButton.visibility = View.VISIBLE
-                text.visibility = View.VISIBLE
+                textBack.visibility = View.VISIBLE
                 previewViewBack.visibility = View.VISIBLE
                 photoImageView.setImageDrawable(null)
             }
@@ -175,7 +181,7 @@ class Sayfa5 : AppCompatActivity() {
     private fun sendCapturedPhotoToServer() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("http://192.168.1.24:5000/back_face")
+                val url = URL("http://192.168.0.17:5000/back_face")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.doOutput = true
@@ -196,7 +202,7 @@ class Sayfa5 : AppCompatActivity() {
                         buttonForward.visibility = View.VISIBLE
                         buttonForward.setOnClickListener {
                             if (response.startsWith("Alan Sonucu: Kimlik algılanamadı.")) {
-                                showAlertDialog("Kimlik algılanamadı lütfen kimliğinizi tekrar çekiniz.")
+                                showAlertDialog("Kimlik algılanamadı lütfen kimliğinizin arka yüzünü tekrar çekiniz.")
                             }else if (response.startsWith("Alan Sonucu: Kimlik algılandı!,  Barkod okunurken hata meydana geldi.")) {
                                 showAlertDialog("Barkod okunamadı lütfen kimliğinizin arka yüzünü tekrar çekiniz.")
                             }else if (response.endsWith("Kimlik Geçersiz. (is_valid boolean variable = False)")) {
@@ -208,14 +214,13 @@ class Sayfa5 : AppCompatActivity() {
                                 startActivity(intent)
                             }
                         }
-                        Toast.makeText(this@Sayfa5, "Fotoğraf başarıyla gönderildi.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     // Sunucudan hatalı bir yanıt alındı, istek başarısız oldu
                     runOnUiThread {
                         val intent = Intent(this@Sayfa5, Sayfa5::class.java)
                         startActivity(intent)
-                        Toast.makeText(this@Sayfa5, "Fotoğraf gönderimi başarısız.", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@Sayfa5, "Fotoğraf gönderimi başarısız.", Toast.LENGTH_SHORT).show()
                     }
                 }
 

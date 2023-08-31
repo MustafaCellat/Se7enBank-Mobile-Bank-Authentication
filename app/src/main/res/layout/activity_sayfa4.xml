@@ -29,6 +29,7 @@
         app:layout_constraintStart_toStartOf="@+id/textFront"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
+
     </androidx.camera.view.PreviewView>
 
 
@@ -73,6 +74,7 @@
         android:id="@+id/yes"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="64dp"
         android:background="@drawable/baseline_check_circle_24"
         android:contentDescription=" "
@@ -80,19 +82,20 @@
         app:layout_constraintBottom_toBottomOf="@+id/take_photo_front"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/take_photo_front"
-        app:layout_constraintTop_toTopOf="@+id/take_photo_front" />
+        app:layout_constraintTop_toBottomOf="@+id/photoImageView" />
 
     <Button
         android:id="@+id/no"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="64dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/baseline_cancel_24"
         android:contentDescription=" "
         app:layout_constraintBottom_toBottomOf="@+id/take_photo_front"
         app:layout_constraintEnd_toStartOf="@+id/take_photo_front"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/take_photo_front" />
+        app:layout_constraintTop_toBottomOf="@+id/photoImageView" />
 
     <View
         android:id="@+id/frameView"
@@ -103,4 +106,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textFront"
         app:layout_constraintTop_toTopOf="@+id/previewViewFront" />
+
+    <TextView
+        android:id="@+id/textCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fotoğrafı onaylıyor musunuz?"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_20ssp"
+        app:layout_constraintBottom_toTopOf="@+id/photoImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,7 +43,7 @@ class Sayfa2 : AppCompatActivity() {
     private fun sendUniqueToServer(benzersiz: String) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("http://192.168.1.24:5000/front_face") // Hedef endpointi güncelleyin
+                val url = URL("http://192.168.0.17:5000/front_face") // Hedef endpointi güncelleyin
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.doOutput = true

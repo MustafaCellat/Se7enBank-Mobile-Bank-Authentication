@@ -63,7 +63,10 @@ class Sayfa4 : AppCompatActivity() {
 
         val frame = findViewById<View>(R.id.frameView)
 
-        val text = findViewById<TextView>(R.id.textFront)
+        val textFront = findViewById<TextView>(R.id.textFront)
+
+        val textCheck = findViewById<TextView>(R.id.textCheck)
+        textCheck.visibility = View.INVISIBLE
 
         val photoImageView = findViewById<ImageView>(R.id.photoImageView)
 
@@ -114,14 +117,16 @@ class Sayfa4 : AppCompatActivity() {
             frame.visibility = View.INVISIBLE
             previewViewFront.visibility = View.INVISIBLE
             captureButton.visibility = View.INVISIBLE
-            text.visibility = View.INVISIBLE
+            textFront.visibility = View.INVISIBLE
 
             buttonYes.visibility = View.VISIBLE
             buttonNo.visibility = View.VISIBLE
+            textCheck.visibility = View.VISIBLE
 
             buttonYes.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
+                textCheck.visibility = View.INVISIBLE
                 sendCapturedPhotoToServer()
                 //val button = findViewById<Button>(R.id.button_forward)
                 //button.setOnClickListener {
@@ -132,9 +137,10 @@ class Sayfa4 : AppCompatActivity() {
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
+                textCheck.visibility = View.INVISIBLE
                 frame.visibility = View.VISIBLE
                 captureButton.visibility = View.VISIBLE
-                text.visibility = View.VISIBLE
+                textFront.visibility = View.VISIBLE
                 previewViewFront.visibility = View.VISIBLE
                 photoImageView.setImageDrawable(null)
             }
@@ -225,7 +231,7 @@ class Sayfa4 : AppCompatActivity() {
     private fun sendCapturedPhotoToServer() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("http://192.168.1.24:5000/front_face")
+                val url = URL("http://192.168.0.17:5000/front_face")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.doOutput = true
@@ -248,11 +254,11 @@ class Sayfa4 : AppCompatActivity() {
                         buttonForward.visibility = View.VISIBLE
                         buttonForward.setOnClickListener {
                             if (response.startsWith("Alan Sonucu: Kimlik algılanamadı.")) {
-                                showAlertDialog("1Kimlik algılanamadı lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
+                                showAlertDialog("Kimlik algılanamadı lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
                             }else if(response =="Alan Sonucu: Kimlik algılandı!,  Kimlik Geçersiz. (is_valid boolean variable = False)") {
-                                showAlertDialog("2Kimlik algılanamadı lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
+                                showAlertDialog("Kimlik algılanamadı lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
                             }else if(response =="Alan Sonucu: Kimlik algılandı!,  None") {
-                                showAlertDialog("3Kimlik algılanamadı lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
+                                showAlertDialog("Kimlik algılanamadı lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
                             }else if (response == "Ön yüz tespit edilemedi.") {
                                 showAlertDialog("Kimlikteki yüzünüz tespit edilemedi lütfen kimliğinizin ön yüzünü tekrar çekiniz.")
                             }else if (response.startsWith("Başarısız:")) {
@@ -262,14 +268,13 @@ class Sayfa4 : AppCompatActivity() {
                                 startActivity(intent)
                             }
                         }
-                        Toast.makeText(this@Sayfa4, "Fotoğraf başarıyla gönderildi.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     // Sunucudan hatalı bir yanıt alındı, istek başarısız oldu
                     runOnUiThread {
                         val intent = Intent(this@Sayfa4, Sayfa4::class.java)
                         startActivity(intent)
-                        Toast.makeText(this@Sayfa4, "Fotoğraf gönderimi başarısız.", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@Sayfa4, "Fotoğraf gönderimi başarısız.", Toast.LENGTH_SHORT).show()
                     }
                 }
                 // Bağlantıyı kapat
@@ -278,7 +283,7 @@ class Sayfa4 : AppCompatActivity() {
                 e.printStackTrace()
                 // Hata durumunda kullanıcıya bilgi ver
                 runOnUiThread {
-                    Toast.makeText(this@Sayfa4, "Hata: ${e.message}", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@Sayfa4, "Hata: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }

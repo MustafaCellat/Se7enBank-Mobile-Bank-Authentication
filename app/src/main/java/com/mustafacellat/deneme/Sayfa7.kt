@@ -138,7 +138,7 @@ class Sayfa7 : AppCompatActivity() {
     private fun sendCapturedPhotoToServer() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("http://192.168.1.24:5000/user_face")
+                val url = URL("http://192.168.0.17:5000/user_face")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.doOutput = true
@@ -165,16 +165,16 @@ class Sayfa7 : AppCompatActivity() {
                 // Örneğin, Toast mesajı olarak göster
                 runOnUiThread {
                     if (response.startsWith("Sonuç: Farklı kişiler")){
-                        showAlertDialog("Maalesef kimlikteki fotoğrafınızla yüzünüz uyuşmamaktadır.")
+                        showAlertDialog("Kimlikteki fotoğrafınızla yüzünüz uyuşmamaktadır.")
                     }else if (response.endsWith("TC no eşleşmedi.")) {
                         showAlertDialog("TC kimlik numaranız uyuşmamaktadır.")
                     }else if (response.startsWith("Başarısız:")) {
-                        showAlertDialog("Maalesef kimlikteki fotoğrafınızla yüzünüz uyuşmamaktadır.")
+                        showAlertDialog("Kimlikteki fotoğrafınızla yüzünüz uyuşmamaktadır.")
                     }else {
                         val intent = Intent(this@Sayfa7, Sayfa8::class.java)
                         startActivity(intent)
                     }
-                    Toast.makeText(this@Sayfa7, response, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@Sayfa7, response, Toast.LENGTH_SHORT).show()
                 }
 
                 // İşleme göre geri bildirim işlemleri eklenebilir
@@ -182,7 +182,7 @@ class Sayfa7 : AppCompatActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 runOnUiThread {
-                    Toast.makeText(this@Sayfa7, "Fotoğraf sunucuya gönderilirken bir hata oluştu.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@Sayfa7, "Fotoğraf sunucuya gönderilirken bir hata oluştu.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
