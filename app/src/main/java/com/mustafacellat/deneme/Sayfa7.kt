@@ -1,7 +1,9 @@
 package com.mustafacellat.deneme
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -43,10 +45,15 @@ class Sayfa7 : AppCompatActivity() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private var capturedPhotoFile: File? = null
 
+    private lateinit var benzersiz: String // Sınıf seviyesinde tanımlanıyor
+
     @SuppressLint("MissingInflatedId", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sayfa7)
+
+        val sharedPreferences: SharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        benzersiz = sharedPreferences.getString("uniqueValue", null) ?: ""
 
         val preview = Preview.Builder().build()
         val cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
@@ -128,7 +135,7 @@ class Sayfa7 : AppCompatActivity() {
         val alertDialog = builder.create()
         okButton.setOnClickListener {
             alertDialog.dismiss()
-            val intent = Intent(this, Sayfa4::class.java)
+            val intent = Intent(this, Sayfa3::class.java)
             startActivity(intent)
         }
 
@@ -138,10 +145,12 @@ class Sayfa7 : AppCompatActivity() {
     private fun sendCapturedPhotoToServer() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("http://192.168.0.17:5000/user_face")
+                val url = URL("https://sevenproject.azurewebsites.net/user_face")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.doOutput = true
+
+                connection.setRequestProperty("unique", benzersiz)
 
                 val outputStream: OutputStream = connection.outputStream
 

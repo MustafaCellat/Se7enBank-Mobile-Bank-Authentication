@@ -24,6 +24,8 @@ import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -60,6 +62,9 @@ class Sayfa4 : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CODE)
         }
+
+        val textWait = findViewById<View>(R.id.textWait)
+        textWait.visibility = View.INVISIBLE
 
         val frame = findViewById<View>(R.id.frameView)
 
@@ -127,12 +132,12 @@ class Sayfa4 : AppCompatActivity() {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
                 textCheck.visibility = View.INVISIBLE
+                textWait.visibility = View.VISIBLE
+                YoYo.with(Techniques.FadeIn)
+                    .duration(1300)
+                    .repeat(YoYo.INFINITE)
+                    .playOn(textWait)
                 sendCapturedPhotoToServer()
-                //val button = findViewById<Button>(R.id.button_forward)
-                //button.setOnClickListener {
-                //    val intent = Intent(this, Sayfa5::class.java)
-                //    startActivity(intent)
-                //}
             }
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
@@ -231,7 +236,7 @@ class Sayfa4 : AppCompatActivity() {
     private fun sendCapturedPhotoToServer() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("http://192.168.0.17:5000/front_face")
+                val url = URL("https://sevenproject.azurewebsites.net/front_face")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.doOutput = true
@@ -250,6 +255,8 @@ class Sayfa4 : AppCompatActivity() {
                     // Sunucudan başarılı bir yanıt alındı, isteğin başarıyla gönderildiğini işaretler
                     val response = connection.inputStream.bufferedReader().use { it.readText() }
                     runOnUiThread {
+                        val textWait = findViewById<View>(R.id.textWait)
+                        textWait.visibility = View.INVISIBLE
                         val buttonForward = findViewById<Button>(R.id.button_forward)
                         buttonForward.visibility = View.VISIBLE
                         buttonForward.setOnClickListener {

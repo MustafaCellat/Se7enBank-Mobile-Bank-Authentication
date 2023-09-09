@@ -1,7 +1,9 @@
 package com.mustafacellat.deneme
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +21,8 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,10 +43,18 @@ class Sayfa5 : AppCompatActivity() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private var capturedPhotoFile: File? = null
 
+    private lateinit var benzersiz: String // Sınıf seviyesinde tanımlanıyor
+
     @SuppressLint("MissingInflatedId", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sayfa5)
+
+        val sharedPreferences: SharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        benzersiz = sharedPreferences.getString("uniqueValue", null) ?: ""
+
+        val textWait = findViewById<View>(R.id.textWait)
+        textWait.visibility = View.INVISIBLE
 
         val frame = findViewById<View>(R.id.frameView)
 
@@ -109,8 +121,12 @@ class Sayfa5 : AppCompatActivity() {
                 buttonNo.visibility = View.INVISIBLE
                 buttonYes.visibility = View.INVISIBLE
                 textCheck.visibility = View.INVISIBLE
+                textWait.visibility = View.VISIBLE
+                YoYo.with(Techniques.FadeIn)
+                    .duration(1300)
+                    .repeat(YoYo.INFINITE)
+                    .playOn(textWait)
                 sendCapturedPhotoToServer()
-                val button = findViewById<Button>(R.id.button_forward)
             }
             buttonNo.setOnClickListener {
                 buttonNo.visibility = View.INVISIBLE
@@ -181,10 +197,12 @@ class Sayfa5 : AppCompatActivity() {
     private fun sendCapturedPhotoToServer() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("http://192.168.0.17:5000/back_face")
+                val url = URL("https://sevenproject.azurewebsites.net/back_face")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.doOutput = true
+
+                connection.setRequestProperty("unique", benzersiz)
 
                 val outputStream: OutputStream = connection.outputStream
 
@@ -198,6 +216,8 @@ class Sayfa5 : AppCompatActivity() {
                     // Sunucudan başarılı bir yanıt alındı, isteğin başarıyla gönderildiğini işaretler
                     val response = connection.inputStream.bufferedReader().use { it.readText() }
                     runOnUiThread {
+                        val textWait = findViewById<View>(R.id.textWait)
+                        textWait.visibility = View.INVISIBLE
                         val buttonForward = findViewById<Button>(R.id.button_forward)
                         buttonForward.visibility = View.VISIBLE
                         buttonForward.setOnClickListener {

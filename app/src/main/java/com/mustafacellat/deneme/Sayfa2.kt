@@ -30,9 +30,6 @@ class Sayfa2 : AppCompatActivity() {
                 apply()
             }
 
-            println("elma")
-            println(uniqueValue)
-
             sendUniqueToServer(uniqueValue)
 
             val intent = Intent(this, Sayfa3::class.java)
@@ -43,7 +40,7 @@ class Sayfa2 : AppCompatActivity() {
     private fun sendUniqueToServer(benzersiz: String) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("http://192.168.0.17:5000/front_face") // Hedef endpointi güncelleyin
+                val url = URL("https://sevenproject.azurewebsites.net/login") // Hedef endpointi güncelleyin
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.doOutput = true
